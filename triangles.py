@@ -14,9 +14,9 @@ def checkRight(a, b, c):
         hyp = c*c
 
     if(sides==hyp):
-        return "Not Right"
-    else:
         return "Right"
+    else:
+        return "Not Right"
 
 def classifyTriangle(a,b,c):
     tri = "Scalene"
@@ -46,25 +46,25 @@ def runClassifyTriangle(a, b, c):
 class TestTriangles(unittest.TestCase):
     # define multiple sets of tests as functions with names that begin
     # with 'test'.  Each function may include multiple tests
-    def testSet1(self): # test invalid inputs
+    def testInts(self): # test integer inputs
         # your tests go here.  Include as many tests as you'd like
-        self.assertEqual(classifyTriangle(3,4,5),'Right','3,4,5 is a Right triangle')
+        self.assertEqual(classifyTriangle(3,4,5),'Scalene, Right','3,4,5 should be a Scalene, Right triangle')
+        self.assertNotEqual(classifyTriangle(4,4,4), 'Isoceles, Not Right', '4,4,4 should be an Equilateral, Not Right triangle.')
+
+    def testFloats(self): #test float inputs
+        self.assertEqual(classifyTriangle(0.125, 0.125, 0.125), 'Equilateral, Not Right', 'This is a 45,45,90 Isoceles Right triangle.')
+        self.assertEqual(classifyTriangle(0.6, 0.8, 1), 'Scalene, Right', 'Decimal version of a 3,4,5 right triangle.')
+
+    def testInvalidTypes(self): #test string, boolean, and null input
+        self.assertNotEqual(classifyTriangle(True, False, False), 'Isoceles, Not Right', "Boolean input should throw an error")
+        self.assertNotEqual(classifyTriangle(True, True, True), 'Equilteral, Not Right', "Boolean input should throw an error")
+        self.assertNotEqual(classifyTriangle(False, False, False), 'Equilateral, Not Right', "Boolean input should throw an error")
+        self.assertNotEqual(classifyTriangle(None, None, None), "Equilateral, Not Right", "None input should throw error")
         
-    def testMyTestSet2(self): 
-        # define multiple test sets to test different aspects of the code
-        # notice that tests can have bugs too!
-        self.assertEqual(classifyTriangle(1,1,1),'Equilateral','1,1,1 should be equilateral')
-        self.assertNotEqual(classifyTriangle(10,10,10),'Isoceles','Should be Equilateral')
-        self.assertEqual(classifyTriangle(10,15,30),'Scalene','Should be Isoceles')
         
 
-if __name__ == '__main__':
-    # examples of running the code
-    runClassifyTriangle(1,2,3)
-    runClassifyTriangle(1,1,1)
-    
-    #unittest.main(exit=False) # this runs all of the tests - use this line if running from Spyder
-    #unittest.main(exit=True) # this runs all of the tests - use this line if running from the command line
+if __name__ == '__main__':    
+    unittest.main(exit=True) # this runs all of the tests - use this line if running from the command line
     
     
        
