@@ -1,5 +1,4 @@
 import unittest     # this makes Python unittest module available
-import math
 
 def checkRight(a, b, c):
     sides = a*a + b*b
@@ -67,14 +66,19 @@ class TestTriangles(unittest.TestCase):
         self.assertEqual(classifyTriangle(1.32, 1.325, 1.33), 'Scalene, Not Right', '1.32,1.325,1.33 should be a Scalene, Not Right triangle')
         self.assertEqual(classifyTriangle(33.452, 30.521, 30.521), 'Isosceles, Not Right', '33.452,30.521,30.521 should be an Isosceles, Not Right triangle')
         # isosceles right triangles cannot be represented using python as all of these triangle types have at least 1 irrational side
+        # testing order of right triangle input
+        self.assertEqual(classifyTriangle(1,0.6,0.8), 'Scalene, Right', '1,0.6,0.8 should be a Scalene, Right triangle')
 
     def testInvalidFloats(self):
         # test with 0 and negative numbers as input; both should likely throw an error
-        self.assertNotEqual(classifyTriangle(30.052, 12.123, 0.000), 'Scalene, Not Right', '10,12,0 should throw an error for having a side length of zero')
-        self.assertNotEqual(classifyTriangle(-3.054,-4.78320,-5.02093), 'Scalene, Not Right', '-3,-4,-5 should throw an error for having negative measurements')
+        self.assertNotEqual(classifyTriangle(30.052, 12.123, 0.000), 'Scalene, Not Right', '30.052,12.123,0.000 should throw an error for having a side length of zero')
+        self.assertNotEqual(classifyTriangle(-3.054,-4.78320,-5.02093), 'Scalene, Not Right', '-3.054,-4.78320,-5.02093 should throw an error for having negative measurements')
 
     def testInvalidTypes(self): #test string, boolean, and null input
-        self.assertNotEqual(classifyTriangle(True, False, False), 'Isoceles, Not Right', "Boolean input should throw an error")
+        # assertRaises case adapted from documentation of unittest: https://docs.python.org/3/library/unittest.html
+        with self.assertRaises(TypeError):
+            classifyTriangle("3","4","5")
+        self.assertNotEqual(classifyTriangle(True, False, False), 'Isosceles, Not Right', "Boolean input should throw an error")
         self.assertNotEqual(classifyTriangle(True, True, True), 'Equilteral, Not Right', "Boolean input should throw an error")
         self.assertNotEqual(classifyTriangle(False, False, False), 'Equilateral, Not Right', "Boolean input should throw an error")
         self.assertNotEqual(classifyTriangle(None, None, None), "Equilateral, Not Right", "None input should throw error")
