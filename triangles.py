@@ -30,18 +30,11 @@ def classifyTriangle(a,b,c):
         right=checkRight(a, b, c)
 
     return tri+", "+right
-
-    
-        
         
 def runClassifyTriangle(a, b, c):
     """ invoke classifyTriangle with the specified arguments and print the result """
     print('classifyTriangle(',a, ',', b, ',', c, ')=',classifyTriangle(a,b,c),sep="")
 
-
-# The remainder of this code implements the unit test functionality
-
-# https://docs.python.org/3/library/unittest.html has a nice description of the framework
 
 class TestTriangles(unittest.TestCase):
     def testValidInts(self): # test integer inputs
@@ -75,17 +68,25 @@ class TestTriangles(unittest.TestCase):
         self.assertNotEqual(classifyTriangle(-3.054,-4.78320,-5.02093), 'Scalene, Not Right', '-3.054,-4.78320,-5.02093 should throw an error for having negative measurements')
 
     def testInvalidTypes(self): #test string, boolean, and null input
-        # assertRaises case adapted from documentation of unittest: https://docs.python.org/3/library/unittest.html
-        with self.assertRaises(TypeError):
-            classifyTriangle("3","4","5")
+        self.assertRaises(TypeError, classifyTriangle, ["3","4","5"], "String input should throw a type error")
         self.assertNotEqual(classifyTriangle(True, False, False), 'Isosceles, Not Right', "Boolean input should throw an error")
         self.assertNotEqual(classifyTriangle(True, True, True), 'Equilteral, Not Right', "Boolean input should throw an error")
         self.assertNotEqual(classifyTriangle(False, False, False), 'Equilateral, Not Right', "Boolean input should throw an error")
         self.assertNotEqual(classifyTriangle(None, None, None), "Equilateral, Not Right", "None input should throw error")
+        self.assertRaises(TypeError, classifyTriangle, ["3",4,5], "String input should throw a type error")
         
         
-
-if __name__ == '__main__':    
+if __name__ == '__main__':  
+    print()
+    print("Running classify triangle method with a few basic inputs")
+    print() 
+    runClassifyTriangle(3,4,5)
+    runClassifyTriangle(7.4,7.4,7.4)
+    runClassifyTriangle(3,4,3)
+    runClassifyTriangle(7.2,6.6,5.7)
+    print()
+    print("Running test script on the classifyTriangle method")
+    print()
     unittest.main(exit=True) # this runs all of the tests - use this line if running from the command line
     
     
