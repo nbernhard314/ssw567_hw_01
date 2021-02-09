@@ -1,3 +1,6 @@
+# I pledge my honor that I have abided by the Stevens Honor System.
+# Natalie Bernhard
+
 import unittest     # this makes Python unittest module available
 
 def checkRight(a, b, c):
