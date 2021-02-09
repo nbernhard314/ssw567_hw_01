@@ -1,4 +1,5 @@
 import unittest     # this makes Python unittest module available
+import math
 
 def checkRight(a, b, c):
     sides = a*a + b*b
@@ -24,7 +25,7 @@ def classifyTriangle(a,b,c):
     if(a == b and b == c):
         tri="Equilateral"
     elif(a == b or b == c or a == c):
-        tri="Isoceles"
+        tri="Isosceles"
         right=checkRight(a, b, c)
     else:
         right=checkRight(a, b, c)
@@ -44,16 +45,33 @@ def runClassifyTriangle(a, b, c):
 # https://docs.python.org/3/library/unittest.html has a nice description of the framework
 
 class TestTriangles(unittest.TestCase):
-    # define multiple sets of tests as functions with names that begin
-    # with 'test'.  Each function may include multiple tests
-    def testInts(self): # test integer inputs
-        # your tests go here.  Include as many tests as you'd like
+    def testValidInts(self): # test integer inputs
+        # testing one of each possible triangle with ints
         self.assertEqual(classifyTriangle(3,4,5),'Scalene, Right','3,4,5 should be a Scalene, Right triangle')
-        self.assertNotEqual(classifyTriangle(4,4,4), 'Isoceles, Not Right', '4,4,4 should be an Equilateral, Not Right triangle.')
+        self.assertEqual(classifyTriangle(4,4,4), 'Equilateral, Not Right', '4,4,4 should be an Equilateral, Not Right triangle.')
+        self.assertEqual(classifyTriangle(3,4,6), 'Scalene, Not Right', '3,4,6 should be a Scalene, Not Right triangle')
+        self.assertEqual(classifyTriangle(3,4,3), 'Isosceles, Not Right', '3,4,3 should be an Isosceles, Not Right triangle')
+        # testing order of right triangle input
+        self.assertEqual(classifyTriangle(4,5,3), 'Scalene, Right', '4,5,3 should be a Scalene, Right triangle')
+        # isosceles right triangles cannot be represented using python as all of these triangle types have at least 1 irrational side
 
-    def testFloats(self): #test float inputs
-        self.assertEqual(classifyTriangle(0.125, 0.125, 0.125), 'Equilateral, Not Right', 'This is a 45,45,90 Isoceles Right triangle.')
-        self.assertEqual(classifyTriangle(0.6, 0.8, 1), 'Scalene, Right', 'Decimal version of a 3,4,5 right triangle.')
+    def testInvalidInts(self):
+        # test with 0 and negative numbers as input; both should likely throw an error
+        self.assertNotEqual(classifyTriangle(10, 12, 0), 'Scalene, Not Right', '10,12,0 should throw an error for having a side length of zero')
+        self.assertNotEqual(classifyTriangle(-3,-4,-5), 'Scalene, Right', '-3,-4,-5 should throw an error for having negative measurements')
+
+    def testValidFloats(self): #test float inputs
+        # testing one of each possible triangle with ints
+        self.assertEqual(classifyTriangle(0.125, 0.125, 0.125), 'Equilateral, Not Right', '0.125,0.125,0.125 should be an Equilateral, Not Right triangle')
+        self.assertEqual(classifyTriangle(0.6, 0.8, 1), 'Scalene, Right', '0.6,0.8,1 should be a Scalene, Right triangle')
+        self.assertEqual(classifyTriangle(1.32, 1.325, 1.33), 'Scalene, Not Right', '1.32,1.325,1.33 should be a Scalene, Not Right triangle')
+        self.assertEqual(classifyTriangle(33.452, 30.521, 30.521), 'Isosceles, Not Right', '33.452,30.521,30.521 should be an Isosceles, Not Right triangle')
+        # isosceles right triangles cannot be represented using python as all of these triangle types have at least 1 irrational side
+
+    def testInvalidFloats(self):
+        # test with 0 and negative numbers as input; both should likely throw an error
+        self.assertNotEqual(classifyTriangle(30.052, 12.123, 0.000), 'Scalene, Not Right', '10,12,0 should throw an error for having a side length of zero')
+        self.assertNotEqual(classifyTriangle(-3.054,-4.78320,-5.02093), 'Scalene, Not Right', '-3,-4,-5 should throw an error for having negative measurements')
 
     def testInvalidTypes(self): #test string, boolean, and null input
         self.assertNotEqual(classifyTriangle(True, False, False), 'Isoceles, Not Right', "Boolean input should throw an error")
